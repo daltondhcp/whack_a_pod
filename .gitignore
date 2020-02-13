@@ -1,5 +1,4 @@
 .DS_Store
-Makefile.properties
 Makefile.jp.properties
 Makefile.us.properties
 apps/game/kubernetes/game-deployment.yaml
