@@ -37,7 +37,6 @@ kubectl expose deployment admin-deployment --name=admin --target-port=8080  --ty
 kubectl create serviceaccount wap-admin	
 kubectl create clusterrolebinding wap-admin --clusterrole=cluster-admin --serviceaccount=default:wap-admin
 kubectl set serviceaccount deployment admin-deployment wap-admin
-az aks create --resource-group aksrg --name wack-cluster --node-count 2 --generate-ssh-keys
 ```
 #### Deploy and expose api container
 ```
