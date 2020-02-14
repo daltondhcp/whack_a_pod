@@ -56,7 +56,7 @@ NAME                                READY   STATUS    RESTARTS   AGE     IP     
 admin-deployment-54dbd864bd-9t2ml   1/1     Running   0          7m15s   10.244.1.3    aks-nodepool1-22717319-vmss000000   <none>           <none>
 api-deployment-84c56c8bf6-4k2gc     1/1     Running   0          4m2s    10.244.1.9    aks-nodepool1-22717319-vmss000000   <none>           <none>
 api-deployment-84c56c8bf6-d7g2t     1/1     Running   0          4m2s    10.244.1.8    aks-nodepool1-22717319-vmss000000   <none>           <none>
-api-deployment-84c56c8bf6-gpwxf     1/1     Running   0          4m2s    10.244.1.5    aks-nodepool1-22717319-vmss000000   <none>           <none>
+api-deployment-84c56c8bf6-gpwxf     1/1     Running   0          4m2s    10.244.1.5    aks-nodepool1-22717319-vmss000000   <none>           <none>P
 api-deployment-84c56c8bf6-jctg2     1/1     Running   0          4m2s    10.244.0.11   aks-nodepool1-22717319-vmss000001   <none>           <none>
 api-deployment-84c56c8bf6-lhrhr     1/1     Running   0          4m2s    10.244.0.10   aks-nodepool1-22717319-vmss000001   <none>           <none>
 api-deployment-84c56c8bf6-r6qnl     1/1     Running   0          4m2s    10.244.0.9    aks-nodepool1-22717319-vmss000001   <none>           <none>
@@ -71,3 +71,43 @@ game-deployment-5d598d6b74-j5qfc    1/1     Running   0          3m9s    10.244.
 game-deployment-5d598d6b74-qvvp4    1/1     Running   0          3m9s    10.244.0.14   aks-nodepool1-22717319-vmss000001   <none>           <none>
 game-deployment-5d598d6b74-vhbmj    1/1     Running   0          3m9s    10.244.0.15   aks-nodepool1-22717319-vmss000001   <none>           <none>
 ```
+## 3. Publish the game to the internet with an ingress controller
+Your application is currently only accessible from inside your Kubernetes cluster. To expose it properly to the internet, we need to deploy an ingress controller. In this example we will deploy and use the [nginx ingress controller](https://docs.microsoft.com/en-us/azure/aks/ingress-basic).
+
+#### Deploy the nginx-ingress with helm
+```
+#Create namespace
+kubectl create namespace ingress-basic
+
+# Add the official stable repository
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+
+# Use Helm to deploy an NGINX ingress controller
+helm install nginx-ingress stable/nginx-ingress \
+    --namespace ingress-basic \
+    --set controller.replicaCount=2 \
+    --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+    --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
+```
+
+#### Create the ingress route (without SSL/TLS)
+```
+kubectl apply -f https://raw.githubusercontent.com/daltondhcp/whack_a_pod/master/apps/ingress/ingress.aks.yaml
+```
+
+Find the external IP address that you will use to access the game with `kubectl get services -n ingress-basic`
+
+```
+johan@Azure:~$ kubectl get services -n ingress-basic
+NAME                            TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)                      AGE
+nginx-ingress-controller        LoadBalancer   10.0.196.95    52.167.84.179   80:32735/TCP,443:31620/TCP   17m
+nginx-ingress-default-backend   ClusterIP      10.0.169.224   <none>          80/TCP                       17m
+```
+
+Point a fancy DNS name to the external IP that you got or try to access it straight with the public ip. 
+
+If you want a less busy version of the game, try /next.html or /advanced.html instead.
+
+## Enjoy the game! :video_game: 
+
+***(Don't forget to tear down your resource group when you are done playing...)***
