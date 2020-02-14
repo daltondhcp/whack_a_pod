@@ -14,6 +14,17 @@ You will be asked to create a storage account, accept that and give it a name. T
 In the example below, we create a resource group and a cluster with the simplest possible configuration. The creation usually takes between 5-10 minutes. 
 
 ```
-az group create --name aksrg --location eastus2
++ # Set variables
+clustername='wack-cluster'
+resourcegroup='aksrg'
+az group create --name $resourcegroup --location eastus2
+az aks create --resource-group $resourcegroup --name $clustername --node-count 2 --generate-ssh-keys
+```
+## 2. Deploy the containers to Kubernetes
+While there are more elegant ways to do this with package managers like HELM, we create the deployments with the command line in this example. It is up to you if you want to build the containers yourself or use the pre-built ones provided from my docker hub repo. 
+
+```
+az aks get-credentials -n $clustername -g $resourcegroup
+
 az aks create --resource-group aksrg --name wack-cluster --node-count 2 --generate-ssh-keys
 ```
