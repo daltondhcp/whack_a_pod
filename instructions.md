@@ -4,7 +4,7 @@ These instructions assume that you have basic knowledge of Azure and Kubernetes.
 
 ### ***Prerequisites - tooling***
 
-Unless you already have helm, kubectl az cli and git on your machine, I recommend you to use e Azure Cloud Shell when following the instructions. Azure Cloud Shell runs in your browser, and comes pre-installed with all the tools you need to work with Kubernetes. You start the cloud shell in the [Azure Portal](https://portal.azure.com) on the "shell" button in the top left tool bar or by launching https://shell.azure.com if you prefer a full screen cli experience. 
+Unless you already have helm, kubectl az cli and git on your machine, I recommend you to use Azure Cloud Shell when following the instructions. Azure Cloud Shell runs in your browser, and comes pre-installed with all the tools you need to work with Kubernetes. You start the cloud shell in the [Azure Portal](https://portal.azure.com) on the "shell" button in the top left tool bar or by launching https://shell.azure.com if you prefer a full screen cli experience. 
 (https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough#use-azure-cloud-shell)
 
 You will be asked to create a storage account, accept that and give it a name. Then when the cloud shell starts, **select bash**.
